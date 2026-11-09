@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding Organizer</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Playfair Display -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        roseGold: {
+                            50: '#fcf8f6',
+                            100: '#f6edeb',
+                            200: '#ebd8d3',
+                            500: '#d4a373',
+                            600: '#bc8a5f',
+                            700: '#9b6e47',
+                            900: '#5c3a21',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body class="bg-roseGold-50/50 text-stone-800 font-sans antialiased selection:bg-roseGold-200">
+
+    <!-- Notification Toast -->
+    <div id="toast" style="opacity: 0; transform: translate(-50% , 20px); transition: all 0.3s ease;" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 bg-stone-900 text-white px-6 py-3.5 rounded-2xl shadow-2xl flex items-center space-x-3 text-sm border border-stone-800">
+    <i class="fa-solid fa-circle-check text-roseGold-500 text-lg"></i>
+    <span id="toast-message">Item berhasil ditambahkan!</span>
+    </div>
+
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-roseGold-100 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center space-x-3">
+                <div class="w-11 h-11 rounded-full bg-stone-900 flex items-center justify-center text-roseGold-500 font-serif font-bold text-xl shadow-md">A</div>
+                <div>
+                    <span class="font-serif text-sm font-bold tracking-wider text-stone-900 block">ACHMAD BUHORI WEDDING</span>
+                    <span class="text-[10px] uppercase tracking-widest text-roseGold-600 font-semibold block">Organizer & Planner</span>
+                </div>
+            </a>
+
+            <!-- Nav Links -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-stone-600">
+                <a href="#beranda" class="hover:text-roseGold-600 transition">Beranda</a>
+                <a href="#katalog" class="hover:text-roseGold-600 transition">Katalog Vendor</a>
+                <a href="#kalkulator" class="hover:text-roseGold-600 transition">Kalkulator Budget</a>
+                <a href="#testimoni" class="hover:text-roseGold-600 transition">Testimoni</a>
+                <a href="#faq" class="hover:text-roseGold-600 transition">FAQ</a>
+            </nav>
+
+            <!-- Cart Trigger Button & Mobile Menu -->
+            <div class="flex items-center space-x-3">
+                <button onclick="toggleCartDrawer()" class="relative bg-stone-900 hover:bg-stone-800 text-white px-5 py-2.5 rounded-full text-sm font-medium transition flex items-center space-x-2.5 shadow-md group">
+                    <i class="fa-solid fa-bag-shopping text-roseGold-500 group-hover:scale-110 transition"></i>
+                    <span>Keranjang</span>
+                    <span id="cart-badge" class="absolute -top-1.5 -right-1.5 bg-roseGold-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold shadow">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="beranda" class="relative bg-stone-900 text-white py-24 lg:py-36 overflow-hidden">
+        <div class="absolute inset-0 opacity-35 bg-cover bg-center" style="background-image: url('https://placehold.co/1920x1080/292524/f6edeb?text=Luxury+Wedding+Event')"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-stone-900/90 via-stone-900/70 to-transparent"></div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left">
+            <span class="text-roseGold-500 uppercase tracking-widest text-xs font-semibold px-4 py-1.5 bg-white/10 rounded-full inline-block mb-6 backdrop-blur-sm border border-white/10">Wujudkan Hari Bahagia Tanpa Repot</span>
+            <h1 class="font-serif text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight mb-6 max-w-3xl leading-tight">
+                Rencanakan Pernikahan Impian Anda Sekarang
+            </h1>
+            <p class="text-stone-300 text-base sm:text-lg max-w-2xl mb-10 font-light leading-relaxed">
+                Pilih dekorasi eksklusif, katering lezat, MUA profesional, gedung mewah, hingga dokumentasi terbaik dalam satu platform interaktif dengan estimasi budget real-time.
+            </p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
+                <a href="#katalog" class="bg-roseGold-500 hover:bg-roseGold-600 text-stone-900 px-8 py-4 rounded-full font-semibold transition shadow-lg text-center flex items-center justify-center space-x-2">
+                    <span>Mulai Pilih Vendor</span>
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+                <a href="#kalkulator" class="border border-stone-400 hover:border-white text-white hover:bg-white/10 px-8 py-4 rounded-full font-semibold transition text-center backdrop-blur-sm">
+                    Simulasi Budget Impian
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us / Features Highlight -->
+    <section class="py-16 bg-white border-b border-roseGold-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="flex items-start space-x-4 p-6 rounded-3xl bg-roseGold-50/50 border border-roseGold-100">
+                    <div class="w-12 h-12 rounded-2xl bg-stone-900 text-roseGold-500 flex items-center justify-center flex-shrink-0 text-lg shadow">
+                        <i class="fa-solid fa-calculator"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-serif font-bold text-lg text-stone-900 mb-1">Rancang Anggaran pernikahan</h3>
+                        <p class="text-stone-600 text-xs leading-relaxed">Total biaya pernikahan terhitung otomatis saat Anda mencentang berbagai paket vendor pilihan.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start space-x-4 p-6 rounded-3xl bg-roseGold-50/50 border border-roseGold-100">
+                    <div class="w-12 h-12 rounded-2xl bg-stone-900 text-roseGold-500 flex items-center justify-center flex-shrink-0 text-lg shadow">
+                        <i class="fa-solid fa-handshake"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-serif font-bold text-lg text-stone-900 mb-1">Vendor Terkurasi</h3>
+                        <p class="text-stone-600 text-xs leading-relaxed">Bekerja sama dengan vendor dekorasi, katering, dan MUA profesional berpengalaman di bidangnya.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start space-x-4 p-6 rounded-3xl bg-roseGold-50/50 border border-roseGold-100">
+                    <div class="w-12 h-12 rounded-2xl bg-stone-900 text-roseGold-500 flex items-center justify-center flex-shrink-0 text-lg shadow">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-serif font-bold text-lg text-stone-900 mb-1">Transaksi Fleksibel</h3>
+                        <p class="text-stone-600 text-xs leading-relaxed">Kemudahan transaksi langsung via WhatsApp atau transfer bank resmi dengan konfirmasi instan.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content: Catalog & Interactive Selection -->
+    <main id="katalog" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        
+        <!-- Section Header -->
+        <div class="text-center mb-12">
+            <span class="text-roseGold-600 font-semibold text-xs uppercase tracking-widest block mb-2">Katalog Eksklusif</span>
+            <h2 class="font-serif text-3xl sm:text-4xl font-bold text-stone-900 mb-3">Pilih Kebutuhan Pernikahan Anda</h2>
+            <p class="text-stone-600 max-w-xl mx-auto text-sm sm:text-base">Klik tombol pada setiap item untuk memasukkannya ke simulasi budget impian dan keranjang pemesanan.</p>
+        </div>
+
+        <!-- Filter Categories Tabs -->
+        <div class="flex flex-wrap justify-center gap-2 sm:gap-3 mb-12">
+            <button onclick="filterCategory('all')" class="cat-btn active-cat px-6 py-2.5 rounded-full text-sm font-medium transition bg-stone-900 text-white shadow-md">Semua Vendor</button>
+            <button onclick="filterCategory('dekorasi')" class="cat-btn px-6 py-2.5 rounded-full text-sm font-medium transition bg-white text-stone-600 border border-roseGold-200 hover:border-roseGold-500 hover:text-stone-900 shadow-sm">Dekorasi</button>
+            <button onclick="filterCategory('katering')" class="cat-btn px-6 py-2.5 rounded-full text-sm font-medium transition bg-white text-stone-600 border border-roseGold-200 hover:border-roseGold-500 hover:text-stone-900 shadow-sm">Katering</button>
+            <button onclick="filterCategory('mua')" class="cat-btn px-6 py-2.5 rounded-full text-sm font-medium transition bg-white text-stone-600 border border-roseGold-200 hover:border-roseGold-500 hover:text-stone-900 shadow-sm">MUA & Busana</button>
+            <button onclick="filterCategory('gedung')" class="cat-btn px-6 py-2.5 rounded-full text-sm font-medium transition bg-white text-stone-600 border border-roseGold-200 hover:border-roseGold-500 hover:text-stone-900 shadow-sm">Gedung / Venue</button>
+            <button onclick="filterCategory('dokumentasi')" class="cat-btn px-6 py-2.5 rounded-full text-sm font-medium transition bg-white text-stone-600 border border-roseGold-200 hover:border-roseGold-500 hover:text-stone-900 shadow-sm">Dokumentasi</button>
+        </div>
+
+        <!-- Layout Grid: Products & Sticky Calculator/Summary -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+            
+            <!-- Product Cards Grid (2 Columns on lg) -->
+            <div id="product-grid" class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <!-- Dynamically populated by JS -->
+            </div>
+
+            <!-- Sticky Summary & Real-time Calculator Card -->
+            <div id="kalkulator" class="lg:col-span-1 bg-white border border-roseGold-200 rounded-3xl p-6 sm:p-8 shadow-xl sticky top-28">
+                <div class="border-b border-roseGold-100 pb-4 mb-4 flex justify-between items-center">
+                    <h3 class="font-serif text-xl font-bold text-stone-900">Ringkasan Budget</h3>
+                    <span class="text-xs bg-roseGold-100 text-roseGold-700 px-3 py-1 rounded-full font-bold"><span id="item-count-badge">0</span> Item</span>
+                </div>
+
+                <!-- Selected Items List Container -->
+                <div id="selected-items-list" class="max-h-64 overflow-y-auto space-y-3 mb-6 pr-1 divide-y divide-stone-100">
+                    <p class="text-stone-400 text-sm italic text-center py-8">Belum ada item yang dipilih dari katalog.</p>
+                </div>
+
+                <!-- Total Calculation Box -->
+                <div class="bg-roseGold-50/70 p-4 rounded-2xl mb-6 border border-roseGold-200">
+                    <div class="flex justify-between items-center text-xs text-stone-600 mb-1.5">
+                        <span>Estimasi Subtotal</span>
+                        <span id="subtotal-display" class="font-medium">Rp 0</span>
+                    </div>
+                    <div class="flex justify-between items-center text-xs text-stone-600 mb-3">
+                        <span>Biaya Administrasi & Pajak</span>
+                        <span class="text-emerald-700 font-medium">Gratis (Promo)</span>
+                    </div>
+                    <div class="border-t border-roseGold-200 pt-3 flex justify-between items-center">
+                        <span class="font-bold text-stone-900 text-sm">Total Estimasi</span>
+                        <span id="grand-total-display" class="font-serif text-xl font-bold text-stone-900">Rp 0</span>
+                    </div>
+                </div>
+
+                <!-- Checkout Action Buttons -->
+                <div class="space-y-3">
+                    <button onclick="openCheckoutModal('whatsapp')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-3.5 px-4 rounded-2xl transition shadow-lg flex items-center justify-center space-x-2 text-sm">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                        <span>Pesan via WhatsApp</span>
+                    </button>
+                    <button onclick="openCheckoutModal('transfer')" class="w-full bg-stone-900 hover:bg-stone-800 text-white font-medium py-3.5 px-4 rounded-2xl transition shadow-md flex items-center justify-center space-x-2 text-sm">
+                        <i class="fa-solid fa-credit-card text-roseGold-500"></i>
+                        <span>Bayar via Transfer / QRIS</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Testimonials Section -->
+    <section id="testimoni" class="bg-white py-20 border-t border-roseGold-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <span class="text-roseGold-600 font-semibold text-xs uppercase tracking-widest block mb-2">Testimoni Klien</span>
+            <h2 class="font-serif text-3xl sm:text-4xl font-bold text-stone-900 mb-3">Cerita Bahagia Pengantin Kami</h2>
+            <p class="text-stone-600 max-w-xl mx-auto text-sm mb-12">Kepuasan pengantin adalah prioritas utama dalam menyukseskan momen istimewa Anda.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-roseGold-50/50 p-8 rounded-3xl border border-roseGold-100 text-left flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center space-x-1 text-amber-500 text-xs mb-4">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-stone-700 text-sm italic mb-6 leading-relaxed">"Sangat terbantu dengan kalkulator budget real-time di website ini. Pilih dekorasi dan katering jadi transparan, pas klik WA langsung terhubung dengan admin."</p>
+                    </div>
+                    <div class="flex items-center space-x-3 pt-4 border-t border-roseGold-200/50">
+                        <img src="https://placehold.co/100x100/d4a373/ffffff?text=RA" alt="Client" class="w-11 h-11 rounded-full object-cover border border-roseGold-300">
+                        <div>
+                            <h4 class="font-semibold text-sm text-stone-900">Rizky & Amanda</h4>
+                            <span class="text-xs text-roseGold-700 block">Pernikahan di Jakarta</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-roseGold-50/50 p-8 rounded-3xl border border-roseGold-100 text-left flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center space-x-1 text-amber-500 text-xs mb-4">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-stone-700 text-sm italic mb-6 leading-relaxed">"Pilihan MUA dan gedung sangat lengkap. Fitur pembayaran transfer bank sangat memudahkan tanpa harus bolak-balik chat manual dari awal."</p>
+                    </div>
+                    <div class="flex items-center space-x-3 pt-4 border-t border-roseGold-200/50">
+                        <img src="https://placehold.co/100x100/bc8a5f/ffffff?text=DP" alt="Client" class="w-11 h-11 rounded-full object-cover border border-roseGold-300">
+                        <div>
+                            <h4 class="font-semibold text-sm text-stone-900">Dimas & Putri</h4>
+                            <span class="text-xs text-roseGold-700 block">Pernikahan di Bandung</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-roseGold-50/50 p-8 rounded-3xl border border-roseGold-100 text-left flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center space-x-1 text-amber-500 text-xs mb-4">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-stone-700 text-sm italic mb-6 leading-relaxed">"Pelayanan ramah, vendor profesional, dan hasil dekorasi gedung benar-benar membuat tamu terpesona. Sangat recommended!"</p>
+                    </div>
+                    <div class="flex items-center space-x-3 pt-4 border-t border-roseGold-200/50">
+                        <img src="https://placehold.co/100x100/9b6e47/ffffff?text=FA" alt="Client" class="w-11 h-11 rounded-full object-cover border border-roseGold-300">
+                        <div>
+                            <h4 class="font-semibold text-sm text-stone-900">Fajar & Alya</h4>
+                            <span class="text-xs text-roseGold-700 block">Pernikahan di Yogyakarta</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-20 bg-roseGold-50/30 border-t border-roseGold-100">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <span class="text-roseGold-600 font-semibold text-xs uppercase tracking-widest block mb-2">Pertanyaan Umum</span>
+                <h2 class="font-serif text-3xl font-bold text-stone-900 mb-3">Hal Sering Ditanyakan</h2>
+                <p class="text-stone-600 text-sm">Informasi seputar pemesanan dan layanan Aura Wedding Organizer.</p>
+            </div>
+
+            <div class="space-y-4">
+                <div class="bg-white p-6 rounded-2xl border border-roseGold-200 shadow-sm">
+                    <h4 class="font-serif font-bold text-stone-900 mb-2 flex items-center">
+                        <i class="fa-solid fa-circle-question text-roseGold-600 mr-2.5"></i>
+                        Bagaimana cara kerja kalkulator budget pernikahan ini?
+                    </h4>
+                    <p class="text-stone-600 text-xs leading-relaxed pl-7">Anda cukup mencentang item atau paket vendor yang diinginkan di katalog. Sistem secara otomatis menjumlahkan subtotal biaya secara real-time di sisi kanan layar.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border border-roseGold-200 shadow-sm">
+                    <h4 class="font-serif font-bold text-stone-900 mb-2 flex items-center">
+                        <i class="fa-solid fa-circle-question text-roseGold-600 mr-2.5"></i>
+                        Apakah bisa melakukan kustomisasi menu katering atau dekorasi?
+                    </h4>
+                    <p class="text-stone-600 text-xs leading-relaxed pl-7">Tentu! Setelah melakukan checkout via WhatsApp, tim planner kami akan menghubungi Anda untuk mendiskusikan penyesuaian menu atau tema sesuai keinginan.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border border-roseGold-200 shadow-sm">
+                    <h4 class="font-serif font-bold text-stone-900 mb-2 flex items-center">
+                        <i class="fa-solid fa-circle-question text-roseGold-600 mr-2.5"></i>
+                        Metode pembayaran apa saja yang didukung?
+                    </h4>
+                    <p class="text-stone-600 text-xs leading-relaxed pl-7">Kami mendukung pembayaran langsung via Transfer Bank resmi (BCA, Mandiri, BNI) serta QRIS untuk kemudahan verifikasi pembayaran instan.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="kontak" class="bg-stone-900 text-stone-300 py-16 border-t border-stone-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-10">
+            <div>
+                <div class="flex items-center space-x-3 mb-4">
+                    <div class="w-9 h-9 rounded-full bg-white flex items-center justify-center text-stone-900 font-serif font-bold">A</div>
+                    <span class="font-serif text-lg font-bold text-white tracking-wider">AURA WEDDING</span>
+                </div>
+                <p class="text-xs text-stone-400 leading-relaxed mb-4">Solusi lengkap pernikahan impian Anda. Transparan, terpercaya, dan profesional dalam setiap detail acara.</p>
+                <div class="flex space-x-4 text-stone-400 text-sm">
+                    <a href="#" class="hover:text-roseGold-500 transition"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="hover:text-roseGold-500 transition"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" class="hover:text-roseGold-500 transition"><i class="fa-brands fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div>
+                <h4 class="text-white font-semibold text-sm uppercase tracking-wider mb-4">Navigasi Cepat</h4>
+                <ul class="space-y-2.5 text-xs text-stone-400">
+                    <li><a href="#beranda" class="hover:text-white transition">Beranda Utama</a></li>
+                    <li><a href="#katalog" class="hover:text-white transition">Katalog Vendor</a></li>
+                    <li><a href="#kalkulator" class="hover:text-white transition">Kalkulator Budget</a></li>
+                    <li><a href="#testimoni" class="hover:text-white transition">Testimoni Klien</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-semibold text-sm uppercase tracking-wider mb-4">Kategori Layanan</h4>
+                <ul class="space-y-2.5 text-xs text-stone-400">
+                    <li><a href="#katalog" class="hover:text-white transition">Dekorasi Pelaminan</a></li>
+                    <li><a href="#katalog" class="hover:text-white transition">Paket Katering & Prasmanan</a></li>
+                    <li><a href="#katalog" class="hover:text-white transition">MUA Pengantin & Keluarga</a></li>
+                    <li><a href="#katalog" class="hover:text-white transition">Gedung & Venue Pernikahan</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-semibold text-sm uppercase tracking-wider mb-4">Kantor & Kontak</h4>
+                <p class="text-xs text-stone-400 mb-2.5"><i class="fa-solid fa-location-dot text-roseGold-500 mr-2"></i> Jl. Melati Indah No. 88, Jakarta Selatan</p>
+                <p class="text-xs text-stone-400 mb-2.5"><i class="fa-solid fa-phone text-roseGold-500 mr-2"></i> +62 812-3456-7890</p>
+                <p class="text-xs text-stone-400"><i class="fa-solid fa-envelope text-roseGold-500 mr-2"></i> hello@aurawedding.id</p>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-6 border-t border-stone-800 text-center text-xs text-stone-500">
+            &copy; 2026 Aura Wedding Organizer. All rights reserved. Prototipe Mockup Interaktif.
+        </div>
+    </footer>
+
+    <!-- Cart Drawer (Side panel for quick view) -->
+    <div id="cart-drawer" class="fixed inset-0 z-50 overflow-hidden hidden">
+        <div onclick="toggleCartDrawer()" class="absolute inset-0 bg-stone-900/60 backdrop-blur-sm transition-opacity"></div>
+        <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-md bg-white shadow-2xl flex flex-col">
+                <div class="p-6 border-b border-roseGold-100 flex items-center justify-between bg-roseGold-50/50">
+                    <h3 class="font-serif text-lg font-bold text-stone-900 flex items-center space-x-2">
+                        <i class="fa-solid fa-bag-shopping text-roseGold-600"></i>
+                        <span>Keranjang & Pilihan Anda</span>
+                    </h3>
+                    <button onclick="toggleCartDrawer()" class="text-stone-400 hover:text-stone-700 p-2"><i class="fa-solid fa-xmark text-lg"></i></button>
+                </div>
+                <div id="drawer-items-list" class="flex-1 overflow-y-auto p-6 space-y-4 divide-y divide-stone-100">
+                    <!-- Populated dynamically -->
+                </div>
+                <div class="p-6 border-t border-roseGold-100 bg-roseGold-50/50">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="font-semibold text-stone-700 text-sm">Total Biaya:</span>
+                        <span id="drawer-total-display" class="font-serif text-xl font-bold text-stone-900">Rp 0</span>
+                    </div>
+                    <div class="space-y-2.5">
+                        <button onclick="toggleCartDrawer(); openCheckoutModal('whatsapp');" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-2xl font-medium text-xs transition flex items-center justify-center space-x-2 shadow">
+                            <i class="fa-brands fa-whatsapp text-base"></i>
+                            <span>Pesan via WhatsApp</span>
+                        </button>
+                        <button onclick="toggleCartDrawer(); openCheckoutModal('transfer');" class="w-full bg-stone-900 hover:bg-stone-800 text-white py-3 rounded-2xl font-medium text-xs transition flex items-center justify-center space-x-2 shadow">
+                            <i class="fa-solid fa-credit-card text-roseGold-500"></i>
+                            <span>Bayar via Transfer / QRIS</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Checkout WhatsApp / Transfer Bank -->
+    <div id="checkout-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto hidden">
+        <div onclick="closeCheckoutModal()" class="fixed inset-0 bg-stone-900/70 backdrop-blur-sm"></div>
+        <div class="relative bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden z-10 p-6 sm:p-8 my-8 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center pb-4 mb-6 border-b border-roseGold-100">
+                <h3 id="modal-title" class="font-serif text-xl font-bold text-stone-900">Konfirmasi Pemesanan</h3>
+                <button onclick="closeCheckoutModal()" class="text-stone-400 hover:text-stone-700 p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <!-- Form Details -->
+            <form id="checkout-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-stone-600 mb-1">Nama Lengkap Pengantin</label>
+                    <input type="text" id="client-name" required class="w-full px-4 py-3 rounded-2xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-roseGold-500 text-sm bg-stone-50" placeholder="Contoh: Rian & Sinta">
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-stone-600 mb-1">Nomor WhatsApp / HP</label>
+                        <input type="tel" id="client-phone" required class="w-full px-4 py-3 rounded-2xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-roseGold-500 text-sm bg-stone-50" placeholder="Contoh: 08123456789">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-stone-600 mb-1">Estimasi Tanggal Acara</label>
+                        <input type="date" id="wedding-date" required class="w-full px-4 py-3 rounded-2xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-roseGold-500 text-sm bg-stone-50">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-stone-600 mb-1">Lokasi / Gedung Pernikahan</label>
+                    <input type="text" id="wedding-location" required class="w-full px-4 py-3 rounded-2xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-roseGold-500 text-sm bg-stone-50" placeholder="Contoh: Gedung Mulia Hall, Jakarta">
+                </div>
+
+                <!-- Dynamic Content for Transfer Bank Option -->
+                <div id="transfer-info-box" class="hidden bg-roseGold-50 p-4 rounded-2xl border border-roseGold-200 text-xs text-stone-700 space-y-2.5">
+                    <p class="font-bold text-stone-900 flex items-center">
+                        <i class="fa-solid fa-circle-info text-roseGold-600 mr-1.5 text-sm"></i>
+                        Instruksi Pembayaran Transfer Bank & QRIS:
+                    </p>
+                    <p>Silakan lakukan pembayaran sesuai total tagihan ke salah satu rekening resmi berikut:</p>
+                    <div class="space-y-1.5 font-mono text-stone-900 font-medium">
+                        <div class="bg-white p-2.5 rounded-xl border border-roseGold-200 flex justify-between items-center">
+                            <span>BCA: 8830192831</span>
+                            <span class="text-[10px] text-stone-500 uppercase">a.n. PT Aura Wedding</span>
+                        </div>
+                        <div class="bg-white p-2.5 rounded-xl border border-roseGold-200 flex justify-between items-center">
+                            <span>MANDIRI: 122000983821</span>
+                            <span class="text-[10px] text-stone-500 uppercase">a.n. PT Aura Wedding</span>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-stone-600 mb-1 mt-3">Upload Bukti Transfer / Catatan Pembayaran</label>
+                        <input type="file" id="transfer-proof" class="w-full text-xs text-stone-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-roseGold-100 file:text-roseGold-700 hover:file:bg-roseGold-200">
+                    </div>
+                </div>
+
+                <input type="hidden" id="checkout-mode" value="whatsapp">
+
+                <div class="pt-2">
+                    <button type="submit" id="submit-order-btn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3.5 rounded-2xl font-medium transition shadow-lg flex items-center justify-center space-x-2 text-sm">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span id="submit-btn-text">Kirim Pesanan ke WhatsApp</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Database Produk / Katalog Vendor Wedding yang Lengkap
+        const products = [
+            {
+                id: 1,
+                category: 'dekorasi',
+                name: 'Dekorasi Rustic Garden Eksklusif',
+                vendor: 'Aura Décor Official',
+                price: 15000000,
+                rating: 4.9,
+                image: 'https://placehold.co/600x400/d4a373/ffffff?text=Rustic+Garden+Decor',
+                desc: 'Dekorasi pelaminan dengan konsep kayu alami, bunga segar pilihan, lighting warm, dan photobooth.'
+            },
+            {
+                id: 2,
+                category: 'dekorasi',
+                name: 'Dekorasi Traditional Royal Jawa',
+                vendor: 'Nusantara Décor',
+                price: 22000000,
+                rating: 5.0,
+                image: 'https://placehold.co/600x400/bc8a5f/ffffff?text=Traditional+Jawa+Decor',
+                desc: 'Gebyok kayu jati asli, melati segar melimpah, dan nuansa emas mewah khas adat istiadat.'
+            },
+            {
+                id: 3,
+                category: 'katering',
+                name: 'Paket Prasmanan 500 Porsi Premium',
+                vendor: 'Rasa Nusantara Catering',
+                price: 35000000,
+                rating: 4.8,
+                image: 'https://placehold.co/600x400/9b6e47/ffffff?text=Catering+Buffet+500pax',
+                desc: 'Menu lengkap: Nasi, Daging Rendang/Sapi Lada Hitam, Ayam, Sup, Aneka Salad, Dessert, dan Air Mineral.'
+            },
+            {
+                id: 4,
+                category: 'katering',
+                name: 'Paket Prasmanan 300 Porsi & 4 Gubukan',
+                vendor: 'Culinary Wedding Service',
+                price: 28500000,
+                rating: 4.9,
+                image: 'https://placehold.co/600x400/8d6b54/ffffff?text=Catering+%2B+Gubukan',
+                desc: 'Buffet utama 300 porsi ditambah gubukan sate ayam, zupa soup, dimsum, dan es cendol.'
+            },
+            {
+                id: 5,
+                category: 'mua',
+                name: 'MUA Wedding Package (Pengantin & 2 Ibu)',
+                vendor: 'Bella Make Up Artist',
+                price: 6500000,
+                rating: 4.9,
+                image: 'https://placehold.co/600x400/a3816a/ffffff?text=Bridal+MUA+Package',
+                desc: 'Makeup pengantin akad & resepsi, retouch baju 2 kali, lengkap dengan rias untuk kedua ibu.'
+            },
+            {
+                id: 6,
+                category: 'mua',
+                name: 'MUA Full Team (Pengantin + Ibu + 4 Bridesmaid)',
+                vendor: 'Glow Wedding MUA',
+                price: 9500000,
+                rating: 5.0,
+                image: 'https://placehold.co/600x400/b5838d/ffffff?text=Full+Team+MUA',
+                desc: 'Paket komplit rias pengantin, orang tua, dan seragam bridesmaid dengan produk kosmetik premium.'
+            },
+            {
+                id: 7,
+                category: 'gedung',
+                name: 'Grand Ballroom Hotel Bintang 5 (8 Jam)',
+                vendor: 'Mulia Grand Ballroom',
+                price: 45000000,
+                rating: 5.0,
+                image: 'https://placehold.co/600x400/5c3a21/ffffff?text=Grand+Ballroom+Venue',
+                desc: 'Kapasitas hingga 1.000 tamu, AC sentral, panggung luas, ruang rias eksklusif, dan parkir luas.'
+            },
+            {
+                id: 8,
+                category: 'gedung',
+                name: 'Pendopo Joglo Adat & Outdoor Garden',
+                vendor: 'Taman Pendopo Asri',
+                price: 18000000,
+                rating: 4.7,
+                image: 'https://placehold.co/600x400/7f5539/ffffff?text=Pendopo+Outdoor+Venue',
+                desc: 'Suasana asri nan romantis memadukan arsitektur Joglo klasik dengan taman hijau terbuka.'
+            },
+            {
+                id: 9,
+                category: 'dokumentasi',
+                name: 'Foto & Video Cinematic 1 Hari Full',
+                vendor: 'LensStory Wedding',
+                price: 7500000,
+                rating: 4.9,
+                image: 'https://placehold.co/600x400/6b705c/ffffff?text=Cinematic+Photo+Video',
+                desc: '2 fotografer, 2 videografer, drone aerial view, teaser reel IG, dan album cetak eksklusif.'
+            },
+            {
+                id: 10,
+                category: 'dokumentasi',
+                name: 'Dokumentasi & Live Streaming Akad',
+                vendor: 'Momentum Production',
+                price: 4500000,
+                rating: 4.8,
+                image: 'https://placehold.co/600x400/588157/ffffff?text=Live+Streaming+%2B+Photo',
+                desc: 'Dokumentasi foto lengkap dengan set peralatan live streaming profesional untuk keluarga di luar kota.'
+            }
+        ];
+
+        // State Keranjang
+        let cart = [];
+
+        // Format ke Rupiah
+        function formatRupiah(number) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
+        }
+
+        // Render Katalog Produk
+        function renderProducts(filter = 'all') {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = '';
+
+            const filtered = filter === 'all' ? products : products.filter(p => p.category === filter);
+
+            filtered.forEach(product => {
+                const isSelected = cart.some(item => item.id === product.id);
+                const card = document.createElement('div');
+                card.className = `bg-white border rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between ${isSelected ? 'border-stone-900 ring-2 ring-roseGold-500' : 'border-roseGold-100'}`;
+                
+                card.innerHTML = `
+                    <div class="relative h-52 overflow-hidden bg-stone-100">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover hover:scale-105 transition duration-500">
+                        <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-stone-900 text-[10px] uppercase font-bold px-3 py-1 rounded-full shadow">${product.category}</span>
+                        <div class="absolute bottom-3 right-3 bg-stone-900/80 backdrop-blur-sm text-amber-400 text-xs px-2.5 py-1 rounded-full flex items-center space-x-1 shadow">
+                            <i class="fa-solid fa-star"></i>
+                            <span class="font-bold text-white">${product.rating}</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between">
+                        <div>
+                            <span class="text-xs text-roseGold-600 font-semibold block mb-1">${product.vendor}</span>
+                            <h4 class="font-serif font-bold text-lg text-stone-900 mb-2 leading-snug">${product.name}</h4>
+                            <p class="text-stone-600 text-xs mb-4 leading-relaxed">${product.desc}</p>
+                        </div>
+                        <div class="pt-4 border-t border-roseGold-100 flex items-center justify-between">
+                            <div>
+                                <span class="text-[10px] text-stone-400 block uppercase font-medium">Harga Paket</span>
+                                <span class="font-serif font-bold text-stone-900 text-base">${formatRupiah(product.price)}</span>
+                            </div>
+                            <button onclick="toggleCartItem(${product.id})" class="px-4 py-2.5 rounded-2xl text-xs font-semibold transition flex items-center space-x-1.5 shadow-sm ${isSelected ? 'bg-stone-900 text-white' : 'bg-roseGold-100 hover:bg-roseGold-600 hover:text-white text-stone-900'}">
+                                <i class="fa-solid ${isSelected ? 'fa-check' : 'fa-plus'}"></i>
+                                <span>${isSelected ? 'Dipilih' : 'Pilih Item'}</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Filter Kategori Tab
+        function filterCategory(category) {
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.classList.remove('bg-stone-900', 'text-white', 'shadow-md');
+                btn.classList.add('bg-white', 'text-stone-600', 'border', 'border-roseGold-200', 'shadow-sm');
+            });
+            event.target.classList.remove('bg-white', 'text-stone-600', 'border', 'border-roseGold-200', 'shadow-sm');
+            event.target.classList.add('bg-stone-900', 'text-white', 'shadow-md');
+            renderProducts(category);
+        }
+
+        // Tambah atau Hapus Item dari Keranjang
+        function toggleCartItem(productId) {
+            const product = products.find(p => p.id === productId);
+            const index = cart.findIndex(item => item.id === productId);
+
+            if (index > -1) {
+                cart.splice(index, 1);
+                showToast(`Item "${product.name}" dihapus dari pilihan.`);
+            } else {
+                cart.push(product);
+                showToast(`Item "${product.name}" berhasil dipilih!`);
+            }
+
+            const activeBtn = document.querySelector('.cat-btn.bg-stone-900');
+            const activeCategory = activeBtn ? activeBtn.textContent.toLowerCase().includes('dekorasi') ? 'dekorasi' : 
+                                   activeBtn.textContent.toLowerCase().includes('katering') ? 'katering' : 
+                                   activeBtn.textContent.toLowerCase().includes('mua') ? 'mua' : 
+                                   activeBtn.textContent.toLowerCase().includes('gedung') ? 'gedung' : 
+                                   activeBtn.textContent.toLowerCase().includes('dokumentasi') ? 'dokumentasi' : 'all' : 'all';
+            
+            renderProducts(activeCategory);
+            updateCartSummary();
+        }
+
+        // Hapus spesifik item dari ringkasan
+        function removeCartItem(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            renderProducts();
+            updateCartSummary();
+            showToast('Item dihapus dari keranjang.');
+        }
+
+        // Update Kalkulator & Ringkasan Real-Time
+        function updateCartSummary() {
+            const listContainer = document.getElementById('selected-items-list');
+            const drawerContainer = document.getElementById('drawer-items-list');
+            const subtotalDisplay = document.getElementById('subtotal-display');
+            const grandTotalDisplay = document.getElementById('grand-total-display');
+            const drawerTotalDisplay = document.getElementById('drawer-total-display');
+            const itemCountBadge = document.getElementById('item-count-badge');
+            const cartBadge = document.getElementById('cart-badge');
+
+            itemCountBadge.textContent = cart.length;
+            cartBadge.textContent = cart.length;
+
+            if (cart.length === 0) {
+                const emptyHTML = `<p class="text-stone-400 text-sm italic text-center py-8">Belum ada item yang dipilih dari katalog.</p>`;
+                listContainer.innerHTML = emptyHTML;
+                drawerContainer.innerHTML = emptyHTML;
+                subtotalDisplay.textContent = formatRupiah(0);
+                grandTotalDisplay.textContent = formatRupiah(0);
+                drawerTotalDisplay.textContent = formatRupiah(0);
+                return;
+            }
+
+            let htmlContent = '';
+            let total = 0;
+
+            cart.forEach(item => {
+                total += item.price;
+                htmlContent += `
+                    <div class="flex justify-between items-center py-2.5 text-xs">
+                        <div class="pr-2">
+                            <span class="font-semibold text-stone-900 block mb-0.5">${item.name}</span>
+                            <span class="text-roseGold-700 font-medium">${formatRupiah(item.price)}</span>
+                        </div>
+                        <button onclick="removeCartItem(${item.id})" class="text-stone-400 hover:text-rose-600 p-1.5 transition"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
+                `;
+            });
+
+            listContainer.innerHTML = htmlContent;
+            drawerContainer.innerHTML = htmlContent;
+            subtotalDisplay.textContent = formatRupiah(total);
+            grandTotalDisplay.textContent = formatRupiah(total);
+            drawerTotalDisplay.textContent = formatRupiah(total);
+        }
+
+        // Toast Notification
+       let toastTimeout;
+            function showToast(message) {
+                const toast = document.getElementById('toast');
+                document.getElementById('toast-message').textContent = message;
+                
+                // 1. Munculkan toast secara langsung
+                toast.style.opacity = '1';
+                toast.style.transform = 'translate(-50%, 20px)';
+                toast.style.pointerEvents = 'auto';
+                
+                // Reset timer agar tidak bentrok kalau diklik cepat
+                clearTimeout(toastTimeout);
+                
+                // 2. Sembunyikan otomatis setelah 3 detik (3000ms)
+                toastTimeout = setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translate(-50%, 0)'; // Geser ke kanan luar layar
+                    toast.style.pointerEvents = 'none';
+                }, 3000);
+            }
+        
+
+        // Cart Drawer Toggle
+        function toggleCartDrawer() {
+            const drawer = document.getElementById('cart-drawer');
+            drawer.classList.toggle('hidden');
+        }
+
+        // Checkout Modal Controller
+        function openCheckoutModal(mode) {
+            if (cart.length === 0) {
+                showToast('Pilih minimal 1 item vendor terlebih dahulu!');
+                return;
+            }
+
+            const modal = document.getElementById('checkout-modal');
+            const modeInput = document.getElementById('checkout-mode');
+            const modalTitle = document.getElementById('modal-title');
+            const transferInfoBox = document.getElementById('transfer-info-box');
+            const submitBtnText = document.getElementById('submit-btn-text');
+            const submitOrderBtn = document.getElementById('submit-order-btn');
+
+            modeInput.value = mode;
+
+            if (mode === 'whatsapp') {
+                modalTitle.textContent = 'Konfirmasi Pesanan via WhatsApp';
+                transferInfoBox.classList.add('hidden');
+                submitBtnText.textContent = 'Kirim Pesanan ke WhatsApp';
+                submitOrderBtn.className = 'w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3.5 rounded-2xl font-medium transition shadow-lg flex items-center justify-center space-x-2 text-sm';
+            } else {
+                modalTitle.textContent = 'Pembayaran via Transfer Bank / QRIS';
+                transferInfoBox.classList.remove('hidden');
+                submitBtnText.textContent = 'Konfirmasi Pembayaran & Kirim Bukti';
+                submitOrderBtn.className = 'w-full bg-stone-900 hover:bg-stone-800 text-white py-3.5 rounded-2xl font-medium transition shadow-lg flex items-center justify-center space-x-2 text-sm';
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeCheckoutModal() {
+            const modal = document.getElementById('checkout-modal');
+            modal.classList.add('hidden');
+        }
+
+        // Handle Form Submit & Auto Generate WhatsApp Message
+        function handleFormSubmit(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('client-name').value;
+            const phone = document.getElementById('client-phone').value;
+            const date = document.getElementById('wedding-date').value;
+            const location = document.getElementById('wedding-location').value;
+            const mode = document.getElementById('checkout-mode').value;
+
+            let total = cart.reduce((sum, item) => sum + item.price, 0);
+            let itemListText = cart.map((item, index) => `${index + 1}. ${item.name} (${formatRupiah(item.price)})`).join('\n');
+
+            if (mode === 'whatsapp') {
+                const waMessage = `Halo Aura Wedding Organizer, saya ingin memesan paket pernikahan berikut:%0A%0A*Nama Pengantin:* ${name}%0A*No HP:* ${phone}%0A*Tanggal Acara:* ${date}%0A*Lokasi:* ${location}%0A%0A*Daftar Pilihan Vendor:*%0A${encodeURIComponent(itemListText)}%0A%0A*Total Estimasi:* ${formatRupiah(total)}%0A%0AMohon konfirmasi ketersediaan dan rincian selanjutnya. Terima kasih!`;
+                
+                const waUrl = `https://wa.me/6281234567890?text=${waMessage}`;
+                window.open(waUrl, '_blank');
+                showToast('Mengarahkan ke WhatsApp...');
+            } else {
+                showToast('Pesanan & Bukti Transfer berhasil dikonfirmasi! Tim kami segera menghubungi.');
+            }
+
+            closeCheckoutModal();
+        }
+
+        // Init on load
+        window.onload = function() {
+            renderProducts();
+        };
+    </script>
+</body>
+</html>
